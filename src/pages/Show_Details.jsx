@@ -3,12 +3,53 @@ import { motion } from 'framer-motion';
 import React, { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import tmdbAPI, { getImagePath } from '../services/tmdb';
+import { db, auth } from '../services/firebase';
+import { collection, addDoc, query, where, onSnapshot, serverTimestamp } from 'firebase/firestore';
+import { onAuthStateChanged } from 'firebase/auth';
 
 export default function Show_Details() {
   const { id } = useParams();
   const [details, setDetails] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  
+  const [reviews, setReviews] = useState([]);
+  const [newReview, setNewReview] = useState('');
+  const [rating, setRating] = useState(5);
+  const [user, setUser] = useState(null);
+  const [submitting, setSubmitting] = useState(false);
+
+  useEffect(() => {
+    const unsubscribeAuth = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
+
+    return () => unsubscribeAuth();
+  }, []);
+
+  useEffect(() => {
+    if (!id) return;
+
+    const q = query(
+      collection(db, 'reviews'),
+      where('showId', '==', id)
+    );
+
+    const unsubscribeReviews = onSnapshot(q, (snapshot) => {
+      let revData = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+      revData.sort((a, b) => {
+        const timeA = a.createdAt?.toMillis ? a.createdAt.toMillis() : 0;
+        const timeB = b.createdAt?.toMillis ? b.createdAt.toMillis() : 0;
+        return timeB - timeA;
+      });
+      setReviews(revData);
+    });
+
+    return () => unsubscribeReviews();
+  }, [id]);
 
   useEffect(() => {
     const fetchDetails = async () => {
@@ -76,6 +117,32 @@ export default function Show_Details() {
       window.open(`https://www.youtube.com/watch?v=${trailer.key}`, '_blank');
     } else {
       alert('Sorry, no YouTube trailer found for this title.');
+    }
+  };
+
+  const handleReviewSubmit = async (e) => {
+    e.preventDefault();
+    if (!newReview.trim()) return;
+    if (!user) return;
+
+    setSubmitting(true);
+    try {
+      await addDoc(collection(db, 'reviews'), {
+        showId: id,
+        userId: user.uid,
+        userName: user.displayName || 'Cinephile',
+        userPhoto: user.photoURL || null,
+        text: newReview,
+        rating: rating,
+        createdAt: serverTimestamp()
+      });
+      setNewReview('');
+      setRating(5);
+    } catch (err) {
+      console.error('Error adding review:', err);
+      alert('Failed to post review. Please try again.');
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -195,6 +262,92 @@ export default function Show_Details() {
                   </span>
                 </div>
               </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="max-w-7xl mx-auto px-8 mt-12 mb-12">
+          <div className="bg-surface-container-low p-8 rounded-lg">
+            <h2 className="text-2xl font-headline font-bold mb-6 text-primary flex items-center gap-3">
+              <span className="material-symbols-outlined">forum</span>
+              Reviews
+            </h2>
+
+            {user ? (
+              <form onSubmit={handleReviewSubmit} className="mb-8 space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-on-surface-variant mb-1">Your Rating</label>
+                  <div className="flex gap-2">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <button
+                        key={star}
+                        type="button"
+                        onClick={() => setRating(star)}
+                        className={`material-symbols-outlined text-3xl ${star <= rating ? 'text-primary' : 'text-surface-variant'}`}
+                        style={{fontVariationSettings: star <= rating ? "'FILL' 1" : "'FILL' 0"}}
+                      >
+                        star
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-on-surface-variant mb-1">Your Review</label>
+                  <textarea
+                    value={newReview}
+                    onChange={(e) => setNewReview(e.target.value)}
+                    className="w-full bg-surface text-on-surface border border-outline rounded-lg p-4 focus:outline-none focus:border-primary transition-colors min-h-[120px]"
+                    placeholder="Write your review here..."
+                    required
+                  ></textarea>
+                </div>
+                <button
+                  type="submit"
+                  disabled={submitting}
+                  className="bg-primary text-on-primary px-6 py-3 rounded-full font-bold hover:shadow-[0_0_15px_rgba(189,157,255,0.4)] transition-all disabled:opacity-50"
+                >
+                  {submitting ? 'Posting...' : 'Post Review'}
+                </button>
+              </form>
+            ) : (
+              <div className="bg-surface-container p-6 rounded-lg mb-8 text-center text-on-surface-variant">
+                <p className="mb-4">You must be logged in to post a review.</p>
+                <p><Link to="/login" className="text-primary hover:underline font-bold">Log In</Link> or <Link to="/signup" className="text-primary hover:underline font-bold">Sign Up</Link></p>
+              </div>
+            )}
+
+            <div className="space-y-6">
+              {reviews.length === 0 ? (
+                <p className="text-on-surface-variant italic">No reviews yet. Be the first to review this title!</p>
+              ) : (
+                reviews.map(review => (
+                  <div key={review.id} className="bg-surface-container p-6 rounded-lg">
+                    <div className="flex items-center gap-4 mb-4">
+                      {review.userPhoto ? (
+                        <img src={review.userPhoto} alt={review.userName} className="w-10 h-10 rounded-full object-cover" />
+                      ) : (
+                        <div className="w-10 h-10 rounded-full bg-primary-dim text-on-primary flex items-center justify-center font-bold text-lg">
+                          {review.userName ? review.userName.charAt(0).toUpperCase() : '?'}
+                        </div>
+                      )}
+                      <div>
+                        <p className="font-bold text-on-surface">{review.userName || 'Cinephile'}</p>
+                        <div className="flex text-primary text-sm">
+                          {[...Array(5)].map((_, i) => (
+                            <span key={i} className="material-symbols-outlined text-sm" style={{fontVariationSettings: i < review.rating ? "'FILL' 1" : "'FILL' 0"}}>star</span>
+                          ))}
+                        </div>
+                      </div>
+                      {review.createdAt && (
+                        <span className="ml-auto text-xs text-on-surface-variant">
+                          {review.createdAt.toDate ? new Date(review.createdAt.toDate()).toLocaleDateString() : ''}
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-on-surface-variant whitespace-pre-wrap">{review.text}</p>
+                  </div>
+                ))
+              )}
             </div>
           </div>
         </section>
