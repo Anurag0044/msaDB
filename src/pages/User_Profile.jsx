@@ -76,6 +76,9 @@ export default function User_Profile() {
 <button onClick={() => navigate('/settings')} className="bg-surface-variant/60 backdrop-blur-xl text-on-surface px-8 py-3 rounded-full font-bold hover:bg-white/10 transition-all">
                             Settings
                         </button>
+<button onClick={() => auth.signOut()} className="bg-error/20 text-error px-8 py-3 rounded-full font-bold hover:bg-error/30 transition-all">
+                            Sign Out
+                        </button>
 </div>
 </div>
 </div>

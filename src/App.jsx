@@ -12,6 +12,7 @@ import Show_Details from './pages/Show_Details';
 import Sign_Up from './pages/Sign_Up';
 import User_Profile from './pages/User_Profile';
 import Watchlist from './pages/Watchlist';
+import Landing_Page from './pages/Landing_Page';
 
 function AnimatedRoutes({ user }) {
   const location = useLocation();
@@ -23,7 +24,7 @@ function AnimatedRoutes({ user }) {
         <Route path="/sign_up" element={!user ? <Sign_Up /> : <Navigate to="/" replace />} />
         
         {/* Protected Routes - Auto redirect to login if not authenticated */}
-        <Route path="/" element={user ? <Home_Page /> : <Navigate to="/login" replace />} />
+        <Route path="/" element={user ? <Home_Page /> : <Landing_Page />} />
         <Route path="/browse" element={user ? <Browse_Search /> : <Navigate to="/login" replace />} />
         <Route path="/settings" element={user ? <Settings /> : <Navigate to="/login" replace />} />
         <Route path="/show/:id" element={user ? <Show_Details /> : <Navigate to="/login" replace />} />
