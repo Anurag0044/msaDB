@@ -33,7 +33,6 @@ function Navbar() {
           <Link to="/browse" className="text-violet-300 border-b-2 border-violet-500 pb-1 hover:bg-white/5 transition-all duration-300">Browse</Link>
           <Link to="/browse?filter=movie" className="text-slate-300 hover:text-white hover:bg-white/5 transition-all duration-300">Movies</Link>
           <Link to="/browse?filter=tv" className="text-slate-300 hover:text-white hover:bg-white/5 transition-all duration-300">Series</Link>
-          <Link to="/browse?filter=anime" className="text-slate-300 hover:text-white hover:bg-white/5 transition-all duration-300">Anime</Link>
           <Link to="/watchlist" className="text-slate-300 hover:text-white hover:bg-white/5 transition-all duration-300">Watchlist</Link>
         </div>
 
@@ -78,7 +77,6 @@ function Navbar() {
           <Link to="/browse" onClick={() => setMobileMenuOpen(false)} className="text-violet-300 font-bold">Browse</Link>
           <Link to="/browse?filter=movie" onClick={() => setMobileMenuOpen(false)} className="text-slate-300 hover:text-white">Movies</Link>
           <Link to="/browse?filter=tv" onClick={() => setMobileMenuOpen(false)} className="text-slate-300 hover:text-white">Series</Link>
-          <Link to="/browse?filter=anime" onClick={() => setMobileMenuOpen(false)} className="text-slate-300 hover:text-white">Anime</Link>
           <Link to="/watchlist" onClick={() => setMobileMenuOpen(false)} className="text-slate-300 hover:text-white">Watchlist</Link>
           {user ? (
             <>

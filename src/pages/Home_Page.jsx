@@ -8,18 +8,15 @@ import { addToWatchlist } from '../utils/watchlist';
 export default function Home_Page() {
   const [trendingMovies, setTrendingMovies] = useState([]);
   const [trendingSeries, setTrendingSeries] = useState([]);
-  const [trendingAnime, setTrendingAnime] = useState([]);
   const [heroIndex, setHeroIndex] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
       const movies = await tmdbAPI.getTrendingMovies();
       const series = await tmdbAPI.getTrendingSeries();
-      const anime = await tmdbAPI.getTrendingAnime();
 
       if (movies?.results) setTrendingMovies(movies.results);
       if (series?.results) setTrendingSeries(series.results);
-      if (anime?.results) setTrendingAnime(anime.results);
     };
     fetchData();
   }, []);
@@ -28,11 +25,11 @@ export default function Home_Page() {
      return [
        trendingMovies[0],
        trendingSeries[0],
-       trendingAnime[0],
        trendingMovies[1],
-       trendingSeries[1]
+       trendingSeries[1],
+       trendingMovies[2]
      ].filter(Boolean).slice(0, 5);
-  }, [trendingMovies, trendingSeries, trendingAnime]);
+  }, [trendingMovies, trendingSeries]);
 
   useEffect(() => {
     if (heroItems.length === 0) return;
@@ -154,14 +151,14 @@ export default function Home_Page() {
                  const top10 = [
                      trendingMovies[0],
                      trendingSeries[0],
-                     trendingAnime[0],
                      trendingMovies[1],
                      trendingSeries[1],
-                     trendingAnime[1],
                      trendingMovies[2],
                      trendingSeries[2],
-                     trendingAnime[2],
-                     trendingMovies[3]
+                     trendingMovies[3],
+                     trendingSeries[3],
+                     trendingMovies[4],
+                     trendingSeries[4]
                  ].filter(Boolean).slice(0, 10);
 
                  // Repeat multiple times for a smooth continuous loop
@@ -232,67 +229,7 @@ export default function Home_Page() {
           </div>
         </section>
 
-        {/* TRENDING ANIME */}
-        <section className="py-24 px-8 md:px-16">
-          <div className="flex justify-between items-end mb-12">
-             <h2 className="text-4xl font-headline font-extrabold tracking-tight text-on-surface">Trending Anime</h2>
-             <Link to="/browse?filter=anime" className="text-secondary font-bold flex items-center gap-2 hover:underline decoration-2 underline-offset-8">
-                Explore All <span className="material-symbols-outlined">arrow_forward</span>
-             </Link>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-4 grid-rows-2 gap-6 h-[800px]">
-            {trendingAnime.slice(0, 4).map((anime, index) => {
-              const isLarge = index === 0;
-              const isMedium = index === 1;
-              return (
-                <Link to={`/show/${anime.id}`} key={anime.id} className={`${isLarge ? 'md:col-span-2 md:row-span-2' : isMedium ? 'md:col-span-2' : ''} relative rounded-lg overflow-hidden group`}>
-                  <img className="w-full h-full object-cover" alt={anime.name} src={getImagePath(anime.backdrop_path || anime.poster_path, 'original')}/>
-                  <div className={`absolute inset-0 ${isLarge ? 'bg-gradient-to-t' : isMedium ? 'bg-gradient-to-l' : 'bg-surface-container-highest/40 group-hover:bg-transparent transition-colors'} from-surface-container-lowest via-transparent to-transparent`}></div>
 
-                  <div className="absolute top-4 right-4 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity z-20">
-                    <button onClick={(e) => handleAddToWatchlist(e, anime)} className="bg-surface/80 p-2 rounded-full hover:bg-primary transition-colors text-white" title="Add to Watchlist">
-                      <span className="material-symbols-outlined text-sm">bookmark_add</span>
-                    </button>
-                    <button onClick={handleReview} className="bg-surface/80 p-2 rounded-full hover:bg-secondary transition-colors text-white" title="Review">
-                      <span className="material-symbols-outlined text-sm">rate_review</span>
-                    </button>
-                  </div>
-                  
-                  {isLarge && (
-                    <div className="absolute bottom-8 left-8 right-8 pointer-events-none z-10">
-                      <div className="flex items-center gap-2 mb-3">
-                        <span className="bg-tertiary text-on-tertiary px-3 py-1 rounded-full text-[10px] font-bold uppercase">Must Watch</span>
-                      </div>
-                      <h3 className="text-4xl font-headline font-bold mb-4 text-white line-clamp-1">{anime.name}</h3>
-                      <p className="text-on-surface-variant line-clamp-2 max-w-lg mb-6">{anime.overview}</p>
-                      <div className="flex items-center gap-6">
-                        <div className="flex gap-1 text-tertiary">
-                          <span className="material-symbols-outlined text-sm" style={{fontVariationSettings: "'FILL' 1"}}>star</span>
-                          <span className="font-bold">{anime.vote_average?.toFixed(1)}</span>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
-                  {isMedium && (
-                    <div className="absolute inset-y-0 right-0 w-1/2 flex flex-col justify-center p-8 pointer-events-none text-right md:text-left z-10">
-                      <h4 className="text-2xl font-headline font-bold mb-2 text-white line-clamp-2">{anime.name}</h4>
-                      <p className="text-sm text-on-surface-variant mb-4 line-clamp-2">{anime.overview}</p>
-                      <div className="text-tertiary font-bold">{anime.vote_average?.toFixed(1)} / 10</div>
-                    </div>
-                  )}
-
-                  {!isLarge && !isMedium && (
-                    <div className="absolute bottom-4 left-4 pointer-events-none z-10">
-                      <h4 className="font-bold text-white line-clamp-1">{anime.name}</h4>
-                      <span className="text-xs text-secondary font-bold">Anime</span>
-                    </div>
-                  )}
-                </Link>
-              );
-            })}
-          </div>
-        </section>
 
         {/* THE VAULT */}
         <section className="py-24 bg-surface">

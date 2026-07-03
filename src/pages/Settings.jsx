@@ -53,7 +53,7 @@ export default function Settings() {
 </div>
 <div>
 <label className="block text-sm font-medium text-on-surface-variant mb-2 px-1">Manage your public presence and personal information on msaDB.</label>
-<textarea className="w-full bg-surface-container-lowest border-none rounded-lg px-6 py-3 focus:ring-2 focus:ring-primary/40 transition-all text-on-surface placeholder:text-outline" rows="3">Cinephile, anime enthusiast, and digital storyteller. Always looking for the next masterpiece.</textarea>
+<textarea className="w-full bg-surface-container-lowest border-none rounded-lg px-6 py-3 focus:ring-2 focus:ring-primary/40 transition-all text-on-surface placeholder:text-outline" rows="3">Cinephile and digital storyteller. Always looking for the next masterpiece.</textarea>
 </div>
 </div>
 </div>

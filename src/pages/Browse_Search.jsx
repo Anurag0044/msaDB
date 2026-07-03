@@ -32,8 +32,6 @@ export default function Browse_Search() {
       data = await tmdbAPI.getTrendingMovies('week');
     } else if (filterType === 'tv') {
       data = await tmdbAPI.getTrendingSeries('week');
-    } else if (filterType === 'anime') {
-      data = await tmdbAPI.getTrendingAnime();
     } else {
       data = await tmdbAPI.getTrendingMovies('week'); // default
     }
@@ -68,7 +66,7 @@ export default function Browse_Search() {
     let data;
     if (activeFilter === 'movie') {
       data = await tmdbAPI.searchMovies(activeQuery);
-    } else if (activeFilter === 'tv' || activeFilter === 'anime') {
+    } else if (activeFilter === 'tv') {
       data = await tmdbAPI.searchSeries(activeQuery);
     } else {
       data = await tmdbAPI.searchMulti(activeQuery);
@@ -143,7 +141,6 @@ export default function Browse_Search() {
                         <button onClick={() => handleFilterChange('all')} className={`${mediaType === 'all' ? 'bg-primary border text-on-primary border-primary' : 'bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high'} py-2 rounded-lg text-sm transition-colors`}>All</button>
                         <button onClick={() => handleFilterChange('movie')} className={`${mediaType === 'movie' ? 'bg-primary border text-on-primary border-primary' : 'bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high'} py-2 rounded-lg text-sm transition-colors`}>Movies</button>
                         <button onClick={() => handleFilterChange('tv')} className={`${mediaType === 'tv' ? 'bg-primary border text-on-primary border-primary' : 'bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high'} py-2 rounded-lg text-sm transition-colors`}>Series</button>
-                        <button onClick={() => handleFilterChange('anime')} className={`${mediaType === 'anime' ? 'bg-primary border text-on-primary border-primary' : 'bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high'} py-2 rounded-lg text-sm transition-colors`}>Anime</button>
                       </div>
                     </div>
                   </div>
