@@ -15,57 +15,57 @@
         theme: {
           extend: {
             "colors": {
-                    "surface-container-highest": "#192540",
+                    "surface-container-highest": "#1c1c21",
                     "tertiary-fixed-dim": "#f77c9e",
                     "on-tertiary-fixed-variant": "#711036",
-                    "primary-dim": "#8a4cfc",
-                    "surface": "#060e20",
-                    "surface-container": "#0f1930",
-                    "secondary": "#34b5fa",
-                    "on-primary": "#3c0089",
-                    "background": "#060e20",
+                    "primary-dim": "#00a2ff",
+                    "surface": "#09090b",
+                    "surface-container": "#121214",
+                    "secondary": "#a8b1c4",
+                    "on-primary": "#000000",
+                    "background": "#09090b",
                     "on-tertiary-fixed": "#380016",
-                    "primary-fixed": "#b28cff",
+                    "primary-fixed": "#7bd3ff",
                     "on-secondary-fixed": "#003853",
                     "tertiary": "#ff97b2",
                     "tertiary-container": "#fe81a4",
-                    "surface-container-high": "#141f38",
+                    "surface-container-high": "#1a1a1f",
                     "tertiary-dim": "#f17799",
-                    "outline": "#6d758c",
-                    "surface-variant": "#192540",
-                    "primary-container": "#b28cff",
-                    "on-surface": "#dee5ff",
-                    "primary": "#bd9dff",
-                    "outline-variant": "#40485d",
-                    "surface-container-low": "#091328",
-                    "secondary-dim": "#17a8ec",
-                    "on-secondary": "#003047",
+                    "outline": "#3f3f46",
+                    "surface-variant": "#1c1c21",
+                    "primary-container": "#004e82",
+                    "on-surface": "#ffffff",
+                    "primary": "#00d8ff",
+                    "outline-variant": "#27272a",
+                    "surface-container-low": "#0d0d0f",
+                    "secondary-dim": "#828ca3",
+                    "on-secondary": "#000000",
                     "error-container": "#a70138",
                     "surface-container-lowest": "#000000",
-                    "surface-tint": "#bd9dff",
-                    "primary-fixed-dim": "#a67aff",
-                    "on-surface-variant": "#a3aac4",
+                    "surface-tint": "#00d8ff",
+                    "primary-fixed-dim": "#3db4ff",
+                    "on-surface-variant": "#a1a1aa",
                     "on-tertiary": "#6a0a31",
                     "inverse-surface": "#faf8ff",
                     "error": "#ff6e84",
                     "on-tertiary-container": "#5a0027",
                     "on-secondary-fixed-variant": "#00567c",
                     "secondary-fixed-dim": "#81ccff",
-                    "secondary-container": "#006591",
-                    "on-primary-fixed-variant": "#390083",
+                    "secondary-container": "#1d2335",
+                    "on-primary-fixed-variant": "#004273",
                     "error-dim": "#d73357",
                     "on-error-container": "#ffb2b9",
                     "on-error": "#490013",
                     "on-primary-fixed": "#000000",
                     "tertiary-fixed": "#ff8eac",
-                    "inverse-on-surface": "#4d556b",
-                    "on-background": "#dee5ff",
-                    "surface-dim": "#060e20",
-                    "on-primary-container": "#2e006c",
-                    "inverse-primary": "#742fe5",
-                    "surface-bright": "#1f2b49",
+                    "inverse-on-surface": "#121214",
+                    "on-background": "#ffffff",
+                    "surface-dim": "#09090b",
+                    "on-primary-container": "#c9e6ff",
+                    "inverse-primary": "#005a96",
+                    "surface-bright": "#27272f",
                     "secondary-fixed": "#a4d8ff",
-                    "on-secondary-container": "#f3f8ff"
+                    "on-secondary-container": "#e1e9ff"
             },
             "borderRadius": {
                     "DEFAULT": "1rem",
@@ -89,9 +89,33 @@
       .no-scrollbar::-webkit-scrollbar { display: none; }
       .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
       .glass-card {
-        background: rgba(25, 37, 64, 0.6);
-        backdrop-filter: blur(20px);
-        border-top: 1px solid rgba(189, 157, 255, 0.2);
+        background: rgba(20, 20, 23, 0.4);
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+      }
+      .glass-button {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      .glass-button:hover {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: rgba(255, 255, 255, 0.2);
+        box-shadow: 0 0 20px rgba(0, 216, 255, 0.3);
+      }
+      .glass-nav {
+        background: linear-gradient(180deg, rgba(0,0,0,0.8) 0%, rgba(9,9,11,0.4) 100%);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      }
+      .cinematic-vignette {
+        box-shadow: inset 0 0 150px rgba(0,0,0,0.9);
       }
       /* Ensure links reset nicely */
       a { color: inherit; text-decoration: inherit; }
